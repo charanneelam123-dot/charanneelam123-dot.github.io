@@ -1,4 +1,4 @@
-const projects = [
+const allProjects = [
 ['Enterprise Agentic Platform','Ten LangGraph workflows with saved checkpoints, evidence checks, and human review.','ai','LangGraph Python FastAPI','enterprise-agentic-platform'],
 ['Financial Document Intelligence','Search disclosures by company and year, rerank passages, and verify source quotes.','ai','RAG Python retrieval','financial-document-intelligence'],
 ['LLM Evaluation & MLOps','Versioned evaluation cases, per-answer checks, and MLflow run comparisons.','ai','Python MLflow evaluation','llm-evaluation-mlops'],
@@ -16,6 +16,7 @@ const projects = [
 ['dbt & Snowflake Analytics','Dimensional models with incremental facts, SCD Type 2, and orchestration.','data','dbt SQL Snowflake Airflow','dbt-snowflake-analytics-platform'],
 ['Uber Analytics Pipeline','Ride-sharing trip analytics built on Delta Lake layers and Airflow.','data','Python Spark Delta Lake Airflow','uber-analytics-data-pipeline']
 ];
+const projects=allProjects.filter(p=>p[2]!=='data');
 let activeFilter='all'; const search=document.querySelector('#project-search');
 function render(){const query=search.value.trim().toLowerCase();const matches=projects.filter(p=>(activeFilter==='all'||p[2]===activeFilter)&&p.join(' ').toLowerCase().includes(query));const list=document.querySelector('#project-list');list.replaceChildren();for(const p of matches){const a=document.createElement('a');a.className='project-row';a.href='https://github.com/charanneelam123-dot/'+p[4];a.target='_blank';a.rel='noopener';const number=document.createElement('span');number.className='row-number';number.textContent=String(projects.indexOf(p)+1).padStart(2,'0');const body=document.createElement('div');const title=document.createElement('h3');title.textContent=p[0];const text=document.createElement('p');text.textContent=p[1];body.append(title,text);const category=document.createElement('span');category.className='row-category';category.textContent={ai:'AI & AGENTS',ml:'MACHINE LEARNING',data:'DATA SYSTEMS'}[p[2]];const arrow=document.createElement('span');arrow.className='row-arrow bi bi-arrow-up-right';arrow.setAttribute('aria-hidden','true');a.append(number,body,category,arrow);list.append(a)}document.querySelector('#result-count').textContent=matches.length+' OF '+projects.length+' PROJECTS';document.querySelector('#empty').hidden=matches.length>0}
 document.querySelectorAll('[data-filter]').forEach(button=>button.addEventListener('click',()=>{activeFilter=button.dataset.filter;document.querySelectorAll('[data-filter]').forEach(b=>{b.classList.toggle('selected',b===button);b.setAttribute('aria-pressed',String(b===button))});render()}));search.addEventListener('input',render);render();
@@ -32,4 +33,4 @@ const dialog=document.querySelector('#video-dialog'),video=dialog.querySelector(
 const imageDialog=document.querySelector('#image-dialog');document.querySelector('#expand-screen').addEventListener('click',()=>{const f=features[selectedProject];document.querySelector('#image-title').textContent=f.title;const img=document.querySelector('#full-image');img.src='assets/'+f.repo+'.png';img.alt=f.alt;imageDialog.showModal()});document.querySelector('#close-image').addEventListener('click',()=>imageDialog.close());
 for(const d of [dialog,imageDialog])d.addEventListener('click',e=>{if(e.target!==d)return;const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close()});
 
-function revealCase(){const id=location.hash.slice(1);const target=document.getElementById(id);if(target&&target.tagName==="DETAILS")target.open=true;}window.addEventListener("hashchange",revealCase);revealCase();
+function revealCase(){const id=location.hash.slice(1);const target=document.getElementById(id);if(target){let parent=target;while(parent){if(parent.tagName==="DETAILS")parent.open=true;parent=parent.parentElement;}}}window.addEventListener("hashchange",revealCase);revealCase();
