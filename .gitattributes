@@ -1,2 +1,2 @@
 # Preserve exact inference bytes for the downloadable experiment checksum.
-dist/evaluation/outputs.jsonl -text
+evaluation/outputs.jsonl -text
